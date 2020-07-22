@@ -271,6 +271,9 @@ int main(int argc, char *argv[])
     // Get current time so we can update file.
     time_t lastupdated = time(NULL);
 
+    // Update list immediately.
+    UpdateList();
+
     // Loop!
     while (cont)
     {
