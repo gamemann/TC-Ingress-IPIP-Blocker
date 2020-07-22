@@ -14,10 +14,4 @@
 #define ntohl(x) (x)
 #endif
 
-
-#ifndef offsetof
-# define offsetof(TYPE, MEMBER)	((uint16_t)&((TYPE *)0)->MEMBER)
-#endif
-#endif
-
 #define BASEDIR_MAPS "/sys/fs/bpf/tc/globals"
