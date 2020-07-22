@@ -242,7 +242,7 @@ void parse_command_line(int argc, char *argv[])
     // Loop through each argument.
     while (optind < argc)
     {
-        if ((c = getopt_long(argc, argv, "d:l:h", longopts, NULL)) != -1)
+        if ((c = getopt_long(argc, argv, "d:l:ht:", longopts, NULL)) != -1)
         {
             switch (c)
             {
