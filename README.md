@@ -1,15 +1,15 @@
 # TC Ingress IPIP Blocker
 ## Description
-A simple TC BPF program that attaches to the ingress filter and blocks any IPs stored in the `/etc/ipipblock/list.conf` file. This program checks the source IP of the inner IP header.
+A simple TC BPF program that attaches to the ingress filter and blocks any IPs stored in the specified file (default is `/etc/IPIPBlock/list.conf`). This program checks the source IP of the inner IP header.
 
 ## Usage
 Usage is as follows:
 
 ```
-./IPIPBlock_loader <interface>
+./IPIPBlock_loader --dev <interface> --list <file> [--help]
 ```
 
-Where `<interface>` is the interface incoming IPIP packets enter.
+Where `<interface>` is the interface incoming IPIP packets enter and `<file>` is the file that contains all the IPs to blacklist. The default interface is `ens18` and the default file is `/etc/IPIPBlock/list.conf`.
 
 ## Building
 You may use `git` and `make` to build this project. For example:
