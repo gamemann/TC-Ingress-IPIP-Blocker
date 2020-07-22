@@ -35,6 +35,7 @@ const char *map_blacklist = BASEDIR_MAPS "/blacklist_map";
 // Command line variables.
 char *dev = "ens18";
 char *list = "/etc/IPIPBlock/list.conf";
+int updatetime = 120;
 int help = 0;
 
 // Command line long options.
@@ -42,6 +43,7 @@ const struct option longopts[] =
 {
     {"dev", required_argument, NULL, 'd'},
     {"list", required_argument, NULL, 'l'},
+    {"time", required_argument, NULL, 't'},
     {"help", no_argument, &help, 'h'}
 };
 
@@ -254,6 +256,11 @@ void parse_command_line(int argc, char *argv[])
 
                     break;
 
+                case 't':
+                    updatetime = atoi(optarg);
+
+                    break;
+
                 case 'h':
                     help = 1;
 
@@ -278,7 +285,8 @@ int main(int argc, char *argv[])
         fprintf(stdout, "Usage: %s ...\n" \
             "--dev -d => The interface to attach the ingress filter to.\n" \
             "--list -l => The path to the file containing a list of IPs per line to add to the blacklist.\n" \
-            "--help -h => Print out help menu.",
+            "--time -t => How often to update the blacklist map in seconds.\n" \
+            "--help -h => Print out help menu.\n",
         argv[0]);
 
         exit(0);
@@ -338,7 +346,7 @@ int main(int argc, char *argv[])
         time_t curtime = time(NULL);
 
         // Check if it has been two minutes since last update.
-        if (curtime > (lastupdated + 120))
+        if (curtime > (lastupdated + updatetime))
         {
             // Update BPF map list.
             UpdateList();
