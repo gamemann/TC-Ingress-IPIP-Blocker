@@ -12,9 +12,11 @@ Usage is as follows:
 Where `<interface>` is the interface incoming IPIP packets enter.
 
 ## Building
-You may use `make` to build this project. For example:
+You may use `git` and `make` to build this project. For example:
 
 ```
+git --recursive https://github.com/gamemann/TC-Ingress-IPIP-Blocker.git
+cd TC-Ingress-IPIP-Blocker/
 make && sudo make install
 ```
 
