@@ -233,6 +233,8 @@ void UpdateList()
             fprintf(stderr, "Error adding %s (%" PRIu32 ") to BPF map :: %s \n", ptr, ip, strerror(errno));
         }
     }
+
+    fclose(fp);
 }
 
 void parse_command_line(int argc, char *argv[])
