@@ -306,7 +306,7 @@ int main(int argc, char *argv[])
         exit(err);
     }
 
-    // Get MAC map.
+    // Get blacklist map.
     blacklist_map_fd = open_map(map_blacklist);
 
     if (blacklist_map_fd < 0)
