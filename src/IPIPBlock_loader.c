@@ -32,6 +32,19 @@ const char TCFile[] = "/etc/IPIPBlock/IPIPBlock_filter.o";
 // Maps.
 const char *map_blacklist = BASEDIR_MAPS "/blacklist_map";
 
+// Command line variables.
+char *dev = "ens18";
+char *list = "/etc/IPIPBlock/list.conf";
+int help = 0;
+
+// Command line long options.
+const struct option longopts[] =
+{
+    {"dev", required_argument, NULL, 'd'},
+    {"list", required_argument, NULL, 'l'},
+    {"help", no_argument, &help, 'h'}
+};
+
 // Extern error number.
 extern int errno;
 
@@ -172,12 +185,12 @@ int bpf_map_get_next_key_and_delete(int fd, const void *key, void *next_key, int
 void UpdateList()
 {
     // Open list file.
-    FILE *fp = fopen("/etc/IPIPBlock/list.conf", "r");
+    FILE *fp = fopen(list, "r");
 
     // Check if file opened successfully.
     if (fp == NULL)
     {
-        fprintf(stderr, "Error opening list file :: %s\n", strerror(errno));
+        fprintf(stderr, "Error opening list file (%s) :: %s\n", list, strerror(errno));
 
         return;
     }
@@ -220,32 +233,79 @@ void UpdateList()
     }
 }
 
+void parse_command_line(int argc, char *argv[])
+{
+    int c = -1;
+
+    // Loop through each argument.
+    while (optind < argc)
+    {
+        if ((c = getopt_long(argc, argv, "d:l:h", longopts, NULL)) != -1)
+        {
+            switch (c)
+            {
+                case 'd':
+                    dev = optarg;
+                    
+                    break;
+                
+                case 'l':
+                    list = optarg;
+
+                    break;
+
+                case 'h':
+                    help = 1;
+
+                    break;
+            }
+        }
+        else
+        {
+            optind++;
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
     // Check argument count.
     if (argc < 2)
     {
-        fprintf(stderr, "Usage: %s <Interface>\n", argv[0]);
+        fprintf(stderr, "Usage: %s --dev <interface>\n", argv[0]);
 
         exit(1);
+    }
+
+    parse_command_line(argc, argv);
+
+    // Check for help option.
+    if (help)
+    {
+        fprintf(stdout, "Usage: %s ...\n" \
+            "--dev -d => The interface to attach the ingress filter to.\n" \
+            "--list -l => The path to the file containing a list of IPs per line to add to the blacklist.\n",
+        argv[0]);
+
+        exit(0);
     }
 
     // Initialize variables.
     int err, ifindex;
 
     // Get interface index.
-    ifindex = if_nametoindex(argv[1]);
+    ifindex = if_nametoindex(dev);
 
     // Check if interface is valid.
     if (ifindex <= 0)
     {
-        fprintf(stderr, "Error loading interface (%s).\n", argv[1]);
+        fprintf(stderr, "Error loading interface (%s).\n", dev);
 
         exit(1);
     }
 
     // Attempt to attach to ingress filter.
-    err = tc_ingress_attach_bpf(argv[1], TCFile, "ingress");
+    err = tc_ingress_attach_bpf(dev, TCFile, "ingress");
 
     if (err)
     {
@@ -258,7 +318,7 @@ int main(int argc, char *argv[])
     if (blacklist_map_fd < 0)
     {
         // Attempt to remove TC filter since map failed.
-        tc_remove_ingress_filter(argv[1]);
+        tc_remove_ingress_filter(dev);
 
         exit(blacklist_map_fd);
     }
@@ -301,7 +361,7 @@ int main(int argc, char *argv[])
     fprintf(stdout, "Cleaning up...\n");
 
     // Remove TC egress filter.
-    err = tc_remove_ingress_filter(argv[1]);
+    err = tc_remove_ingress_filter(dev);
 
     // Check for errors.
     if (err)
