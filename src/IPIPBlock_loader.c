@@ -196,6 +196,7 @@ void UpdateList()
 
     // Parse config file for each line and add to BPF map.
     char line[32];
+    char *ptr;
 
     while (fgets(line, sizeof(line), fp))
     {
@@ -205,14 +206,16 @@ void UpdateList()
             continue;
         }
 
+        ptr = strtok(line, "\n");
+
         // Convert IP to decimal and host byte order to store.
-        uint32_t ip = inet_addr(line);
+        uint32_t ip = inet_addr(ptr);
         uint8_t val = 1;
 
         // Attempt to update BPF map.
         if (bpf_map_update_elem(blacklist_map_fd, &ip, &val, BPF_ANY) != 0)
         {
-            fprintf(stderr, "Error adding %s (%" PRIu32 ") to BPF map.\n", line, ip);
+            fprintf(stderr, "Error adding %s (%" PRIu32 ") to BPF map.\n", ptr, ip);
         }
     }
 }
