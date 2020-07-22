@@ -269,14 +269,7 @@ void parse_command_line(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-    // Check argument count.
-    if (argc < 2)
-    {
-        fprintf(stderr, "Usage: %s --dev <interface>\n", argv[0]);
-
-        exit(1);
-    }
-
+    // Parse command line.
     parse_command_line(argc, argv);
 
     // Check for help option.
