@@ -13,5 +13,6 @@
 #define htonl(x) (x)
 #define ntohl(x) (x)
 #endif
+#endif
 
 #define BASEDIR_MAPS "/sys/fs/bpf/tc/globals"
