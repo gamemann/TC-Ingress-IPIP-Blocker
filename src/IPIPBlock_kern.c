@@ -37,7 +37,7 @@ struct bpf_elf_map
 
 struct bpf_elf_map SEC("maps") blacklist_map =
 {
-    .type = BPF_MAP_TYPE_ARRAY,
+    .type = BPF_MAP_TYPE_HASH,
     .size_key = sizeof(uint32_t),
     .size_value = sizeof(uint8_t),
     .max_elem = 2048,
