@@ -215,7 +215,7 @@ void UpdateList()
         // Attempt to update BPF map.
         if (bpf_map_update_elem(blacklist_map_fd, &ip, &val, BPF_ANY) != 0)
         {
-            fprintf(stderr, "Error adding %s (%" PRIu32 ") to BPF map.\n", ptr, ip);
+            fprintf(stderr, "Error adding %s (%" PRIu32 ") to BPF map :: %s \n", ptr, ip, strerror(errno));
         }
     }
 }
