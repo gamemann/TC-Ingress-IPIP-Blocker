@@ -277,7 +277,8 @@ int main(int argc, char *argv[])
     {
         fprintf(stdout, "Usage: %s ...\n" \
             "--dev -d => The interface to attach the ingress filter to.\n" \
-            "--list -l => The path to the file containing a list of IPs per line to add to the blacklist.\n",
+            "--list -l => The path to the file containing a list of IPs per line to add to the blacklist.\n" \
+            "--help -h => Print out help menu.",
         argv[0]);
 
         exit(0);
