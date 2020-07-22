@@ -24,7 +24,7 @@ libbpf:
 install:
 	mkdir -p /etc/IPIPBlock/
 	cp src/IPIPBlock_filter.o /etc/IPIPBlock/IPIPBlock_filter.o
-	cp src/IPIPBlock_loader /usr/bin/IPIPBlock_loader
+	cp src/IPIPBlock_loader /usr/bin/IPIPBlock
 	cp -n other/ipipblock.service /etc/systemd/system/ipipblock.service
 .PHONY: libbpf all
 .DEFAULT: all
