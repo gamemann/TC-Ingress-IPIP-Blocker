@@ -4,7 +4,7 @@ After=network-online.target
 Requires=network-online.target
 
 [Service]
-ExecStart=/usr/bin/IPIPBlock ens18
+ExecStart=/usr/bin/IPIPBlock
 Restart=always
 
 [Install]
