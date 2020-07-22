@@ -345,7 +345,7 @@ int main(int argc, char *argv[])
         // Get new time.
         time_t curtime = time(NULL);
 
-        // Check if it has been two minutes since last update.
+        // Check for last update.
         if (curtime > (lastupdated + updatetime))
         {
             // Update BPF map list.
