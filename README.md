@@ -6,7 +6,7 @@ A simple TC BPF program that attaches to the ingress filter and blocks any IPs s
 Usage is as follows:
 
 ```
-./ipipblock <interface>
+./IPIPBlock_loader <interface>
 ```
 
 Where `<interface>` is the interface incoming IPIP packets enter.
